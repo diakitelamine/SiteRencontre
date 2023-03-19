@@ -17,7 +17,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "API": {
+    "api": {
+      "hotReloadEnabled": false,
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": false,
