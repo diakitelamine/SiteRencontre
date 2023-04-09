@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { AccountService } from '../_services/account.service';
-import { Observable, of } from 'rxjs';
-import { User } from '../_models/user';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -14,25 +14,22 @@ model: any = {};
 
 
 
-constructor(public acccountService: AccountService){}
+constructor(public acccountService: AccountService, private router:  Router, private toastr: ToastrService){}
 
 ngOnInit(): void {
   
 }
 
 login() {
-  this.acccountService.login(this.model).subscribe(
-    response => {
-      console.log(response);
-    },
-    err => {
-      console.error('Une erreur est survenue lors de la connexion', err);
-    }
-  );
+  this.acccountService.login(this.model).subscribe({
+    next: _ =>this.router.navigateByUrl('/members'),
+    error:error =>this.toastr.error(error.error)
+ })
 }
 
 logout(){
-  this.acccountService.logout();
+  this.acccountService.logout();  
+  this.router.navigateByUrl('/');
 }
 
 }
