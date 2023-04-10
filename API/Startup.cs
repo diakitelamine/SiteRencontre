@@ -1,5 +1,7 @@
 
 using API.Extensions;
+using API.Middleware;
+
 namespace API
 {
     public class Startup
@@ -27,10 +29,11 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // On vérifie si l'application est en mode développement, et si oui, on active la page d'exception de développeur pour afficher les erreurs détaillées
-            if (env.IsDevelopment())
+             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // On configure notre middleware de redirection HTTP vers HTTPS
             app.UseHttpsRedirection();
