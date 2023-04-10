@@ -1,5 +1,8 @@
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,30 +16,34 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         //Définir un champ privé pour stocker l'objet DataContext
-        private readonly DataContext _context;
+         
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         //Créer un constructeur pour initialiser le champ _context
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+              _mapper = mapper;
+              _userRepository = userRepository;
+            
         }
 
         //Définir une méthode qui gère une requête HTTP GET pour obtenir tous les utilisateurs
-        [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
-            return await _context.Users.ToListAsync();
+            var users = await  _userRepository.GetMembersAsync();
+            return Ok(users);
         }
 
-        //Définir une méthode qui gère une requête HTTP GET pour obtenir un utilisateur en fonction de son ID
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUser( string username)
         {
-            //Utiliser la méthode FindAsync pour trouver un utilisateur en fonction de son ID
-            return await _context.Users.FindAsync(id);
+            //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
+            return   await  _userRepository.GetMemberAsyn(username);
+            
         }
+
     }
 }

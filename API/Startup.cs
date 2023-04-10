@@ -1,6 +1,8 @@
 
+using API.Data;
 using API.Extensions;
 using API.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 namespace API
 {
@@ -26,7 +28,7 @@ namespace API
         }
 
         // Cette méthode est appelée par le runtime ASP.NET Core pour configurer le pipeline de requêtes HTTP
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // On vérifie si l'application est en mode développement, et si oui, on active la page d'exception de développeur pour afficher les erreurs détaillées
              if (env.IsDevelopment())
@@ -53,6 +55,22 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+            
+            using var scope = app.ApplicationServices.CreateScope();
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                      await context.Database.MigrateAsync();
+                      await Seed.SeedUsers(context);
+            }
+
+            catch(Exception ex)
+            {
+                var logger = services.GetService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured during migration");
+            }
         }
     }
 }
