@@ -17,7 +17,6 @@ constructor(private accountService : AccountService, private toastr: ToastrServi
  ngOInit() : void{}
 
 
-
  register(){
   this.accountService.register(this.model).subscribe({
     next: () => {

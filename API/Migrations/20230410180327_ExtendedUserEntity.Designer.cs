@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230410141847_ExtendedUserEntity")]
+    [Migration("20230410180327_ExtendedUserEntity")]
     partial class ExtendedUserEntity
     {
         /// <inheritdoc />
@@ -26,6 +26,15 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("TEXT");
 
@@ -36,6 +45,9 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Introduction")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("KnownAs")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastActive")
@@ -51,12 +63,6 @@ namespace API.Data.Migrations
                         .HasColumnType("BLOB");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("knownAs")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

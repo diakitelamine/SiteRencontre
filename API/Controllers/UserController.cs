@@ -1,11 +1,8 @@
-using API.Data;
 using API.DTOs;
-using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 //Définir le namespace pour la classe
 namespace API.Controllers
@@ -36,7 +33,7 @@ namespace API.Controllers
             var users = await  _userRepository.GetMembersAsync();
             return Ok(users);
         }
-
+       
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser( string username)
         {

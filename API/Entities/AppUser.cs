@@ -1,4 +1,7 @@
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Authentication;
 using API.Extensions;
+using Microsoft.VisualBasic;
 
 namespace API.Entities
 {
@@ -13,7 +16,7 @@ namespace API.Entities
 
         public string KnownAs {get; set;}
 
-        public DateTime created {get; set;} = DateTime.UtcNow;
+        public DateTime Created {get; set;} = DateTime.UtcNow;
 
         public DateTime LastActive {get; set;} =  DateTime.UtcNow;
 
@@ -25,11 +28,15 @@ namespace API.Entities
 
         public string  Interests {get; set;}
 
+        public string City {get; set;}
+
+        public string Country {get; set;}
+
         public List<Photo> Photos { get; set; } = new List<Photo>();
 
         // public int GetAge(){
         //     return DateOfBirth.CalcuateAge();
-        // }
+        
 
     }
 }
