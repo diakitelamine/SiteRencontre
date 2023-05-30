@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.DTOs;
 using API.Interfaces;
 using AutoMapper;
@@ -39,6 +40,21 @@ namespace API.Controllers
         {
             //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
             return   await  _userRepository.GetMemberAsyn(username);
+            
+        }
+
+       //Mise a jour des données de l'utilisateur
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if(user == null) return NotFound();
+            _mapper.Map(memberUpdateDto, user);
+            _userRepository.Update(user);
+            if(await _userRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed to update user");
             
         }
 

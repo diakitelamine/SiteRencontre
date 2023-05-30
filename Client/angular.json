@@ -30,7 +30,9 @@
               "./node_modules/bootswatch/dist/united/bootstrap.min.css",
               "./node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/styles.css"
+              
             ],
             "scripts": []
           },
@@ -56,12 +58,7 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true,
-              "fileReplacements": [
-                {
-                  
-                }
-              ]
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
