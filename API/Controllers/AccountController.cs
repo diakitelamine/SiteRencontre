@@ -48,7 +48,9 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             // Recherche l'utilisateur dans la base de données
-            var user = await  _context.Users.SingleOrDefaultAsync(x=>x.UserName == loginDto.UserName);
+            var user = await  _context.Users
+                .Include(p=>p.Photos)
+                .SingleOrDefaultAsync(x=>x.UserName == loginDto.UserName);
 
             // Vérifie si l'utilisateur existe
             if(user == null) return Unauthorized("Le nom d'utilisateur est invalide !");
@@ -68,7 +70,10 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
+
+
             };
         }
 
