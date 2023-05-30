@@ -58,6 +58,24 @@ export class MembersService {
     return this.http.delete(`${this.baseUrl}users/${id}`);
   }
 
+  /**
+   * Permet de définir une photo comme photo principale
+   * @param photoId 
+   * @returns 
+   */
+ setMainPhoto(photoId: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}users/set-main-photo/${photoId}`, {});
+  }
+
+  /**
+   * Supprression d'une photo
+   * @param photoId
+   * @returns
+   */
+  deletePhoto(photoId: number) {
+    return this.http.delete(`${this.baseUrl}users/delete-photo/${photoId}`);
+  }
+
 
 }
 

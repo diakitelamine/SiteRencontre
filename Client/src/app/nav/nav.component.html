@@ -20,6 +20,7 @@
           </li>
         </ul>
         <div class="dropdown"*ngIf="(acccountService.currentUser$ | async) as user" dropdown>
+          <img class="rounded-circle" width="40" height="40"[src]="user.photoUrl || './assets/user.png'">
            <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle> Bienvenue {{user.username | titlecase}}</a>
             <div  class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item" routerLink="/member/edit">Modifier le profil</a>

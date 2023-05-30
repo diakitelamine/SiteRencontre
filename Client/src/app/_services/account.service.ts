@@ -13,32 +13,43 @@ export class AccountService {
   private baseUrl = 'https://localhost:5001/api/';
 
   constructor(private http: HttpClient) {}
-
+  /**
+   * Login
+   * @param model 
+   * @returns 
+   */
   login(model: any): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}account/login`, model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
         return user;
       })
     );
   }
-
-  register(model: any): Observable<User> {
+   /**
+    * Inscription
+    * @param model 
+    * 
+    * @returns 
+    */
+  register(model: any){
     return this.http.post<User>(`${this.baseUrl}account/register`, model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
-        return user;
       })
     );
   }
 
+  /**
+   * Récupère le user courant
+   * @param user 
+   */
   setCurrentUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
