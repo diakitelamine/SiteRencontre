@@ -3,6 +3,7 @@ namespace API.Extensions
 {
     public static class DateTimeExtensions
     {
+        //Calcul de l'âge
         public static int CalcuateAge(this DateOnly dob)
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
