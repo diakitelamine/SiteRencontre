@@ -2,6 +2,7 @@ using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -34,10 +35,18 @@ namespace API.Controllers
 
         //Définir une méthode qui gère une requête HTTP GET pour obtenir tous les utilisateurs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers( [FromQuery] UserParams userParams)
         {
-            //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
-            var users = await  _userRepository.GetMembersAsync();
+            
+          var currentUser = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            userParams.CurrentUsername = currentUser.UserName;
+
+            if(string.IsNullOrEmpty(userParams.Gender)){
+                userParams.Gender = currentUser.Gender == "male"? "femele" : "male";
+            }
+           var users = await _userRepository.GetMembersAsync(userParams);
+           Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
+            users.TotalCount, users.TotalPages);
             return Ok(users);
         }
        
@@ -75,7 +84,7 @@ namespace API.Controllers
 
             if(result.Error != null) return BadRequest(result.Error.Message);
 
-            //Créer un objet photo
+            //Création d'une photo 
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
@@ -83,7 +92,7 @@ namespace API.Controllers
 
             };
 
-            // Vérifier si l'utilisateur n'a pas de photo principale
+            // On verifie si l'utilisateur n'a pas de photo princiapale 
             if(user.Photos.Count == 0)
             {
                 photo.IsMain = true;
@@ -98,11 +107,10 @@ namespace API.Controllers
             
         }
 
-        //Permet de definir la photo principale
+        //Defintion de la photo princiapele
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
-            //Utiliser la méthode ToListAsync pour obtenir tous les utilisateurs dans la base de données
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
             if (user == null) return NotFound();
@@ -117,7 +125,7 @@ namespace API.Controllers
             
         }
 
-        //Supprimer une photo
+        //Suppression d'une photo
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
@@ -140,5 +148,5 @@ namespace API.Controllers
             
         }
 
-    }
+   }
 }

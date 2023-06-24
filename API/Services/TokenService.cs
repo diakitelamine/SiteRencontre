@@ -24,7 +24,8 @@ namespace API.Services
             // On crée une liste de revendications qui seront incluses dans le jeton JWT
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
             // On crée des informations d'identification en utilisant notre clé de sécurité symétrique

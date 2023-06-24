@@ -8,6 +8,13 @@ namespace API.Extensions
         public static string GetUsername(this ClaimsPrincipal user)
         {
             // Récupère le username du token
+            return user.FindFirst(ClaimTypes.Name)?.Value;
+        }
+
+        
+        public static string GetUserId(this ClaimsPrincipal user)
+        {
+            // Récupère le username du token
             return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 

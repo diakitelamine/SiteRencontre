@@ -23,7 +23,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        // Api pour le formulaire d'inscription
+        // Register
         [HttpPost("register")] //POST: api/account/register
        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
        {
@@ -47,22 +47,21 @@ namespace API.Controllers
            {
                Username = user.UserName,
                Token = _tokenService.CreateToken(user),
-               KnownAs = user.KnownAs
+               KnownAs = user.KnownAs,
+               Gender = user.Gender
            };
        }
 
-
-         
-         // Api pour le formulaire  d'authentification
+         // Login
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            // Recherche l'utilisateur dans la base de données
+            // Rechercher un utilisateur 
             var user = await  _context.Users
                 .Include(p=>p.Photos)
                 .SingleOrDefaultAsync(x=>x.UserName == loginDto.UserName);
 
-            // Vérifie si l'utilisateur existe
+            // On verifie si l'utilisateur existe dans la  base de données 
             if(user == null) return Unauthorized("Le nom d'utilisateur est invalide !");
 
             // Créer une instance de HMACSHA512 avec le sel de l'utilisateur pour hacher le mot de passe de l'objet LoginDto
@@ -82,12 +81,13 @@ namespace API.Controllers
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url,
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Gender = user.Gender 
 
             };
         }
 
-        // Vérifie si le nom d'utilisateur existe déjà dans la base de données
+        // Vérification de nom d'utilisateur 
         private async Task<bool> UserExists(string username){
             return await _context.Users.AnyAsync(x=>x.UserName == username.ToLower());
         }

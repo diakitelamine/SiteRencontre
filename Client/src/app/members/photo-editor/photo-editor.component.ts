@@ -58,6 +58,7 @@ user : User | undefined;
       }
     })
   }
+  
 
   /**
    * Supprression d'une photo
@@ -105,6 +106,6 @@ user : User | undefined;
     }
   }
 
-
+  
 
 }

@@ -20,7 +20,8 @@ namespace API.Controllers
         {
             return "Secret text";
         }
-
+        
+        // Gestion d'erreur pour les ressources introuvables 
         [HttpGet("not-found")]
         public ActionResult<AppUser> GetNotFound()
         {
@@ -31,7 +32,7 @@ namespace API.Controllers
 
             return thing;
         }
-
+         // Gestion des erreurs du serveur 
         [HttpGet("server-error")]
         public IActionResult GetServerError()
         {
@@ -40,7 +41,7 @@ namespace API.Controllers
 
             return StatusCode(500, thingToReturn);
         }
-
+           
         [HttpGet("bad-request")]
         public IActionResult GetBadRequest()
         {

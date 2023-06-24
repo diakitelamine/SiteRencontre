@@ -20,6 +20,11 @@ galleryImages: NgxGalleryImage[] = [];
 
   ngOnInit(): void {
     this.loadMember(); 
+    this.getOptions();
+   
+  }
+
+  getOptions() : void{
     this.galleryOptions = [
       {
         width: '500px',
@@ -47,9 +52,7 @@ galleryImages: NgxGalleryImage[] = [];
   }
 
 
-
-
-  //permet de récupérer le membre en fonction de son username
+ //Recuperation d'un membre en fonction de son nom d'utilisateur 
   loadMember(){
     var username = this.route.snapshot.paramMap.get('username');
     this.memberService.getMember(username!).subscribe({
@@ -60,5 +63,4 @@ galleryImages: NgxGalleryImage[] = [];
     })
   }
 
- 
 }
