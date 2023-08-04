@@ -28,6 +28,9 @@ namespace API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<LogUserActivity>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
+            services.AddScoped<LikesRepository>();
+
 
             // Retour de la collection de services IServiceCollection modifiée pour permettre la méthode de chaînage.
             return services;

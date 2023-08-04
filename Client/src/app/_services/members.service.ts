@@ -115,6 +115,21 @@ export class MembersService {
     return this.http.delete(`${this.baseUrl}users/delete-photo/${photoId}`);
   }
 
+  addLike(username: string) {
+    return this.http.post(`${this.baseUrl}likes/${username}`, {});
+  }
+
+  //Recuperation des likes
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    
+    //On recupere les parametres de la pagination
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    //On ajoute le parametre predicate
+    params = params.append('predicate', predicate);
+    //On retourne le resultat de la pagination
+    return  this.getPaginatedResult<Member[]>(this.baseUrl + 'likes', params);
+  }
+
   //Resultat de la pagination
   private getPaginatedResult<T>(url : string, params: HttpParams) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
@@ -149,6 +164,25 @@ export class MembersService {
   
     return params;
   }
+
+  loadings(member : Member){
+    this.accountService.currentUser$.subscribe(response =>{
+       response?.username,
+       response?.photoUrl
+       this.resetUserParams.apply(HttpClient);
+       this.accountService.setCurrentUser.length
+       this.addMember
+    })
+  }
+
+  //Recuperation de la liste des membres
+  memberList(){
+     this.accountService.currentUser$.subscribe(member =>{
+       this.getMember; 
+       
+     })
+  }
+
   
-}
+} 
 
